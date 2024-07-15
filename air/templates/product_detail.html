@@ -1,0 +1,206 @@
+{% extends "base.html" %}
+{% load static %}
+
+<!-- End Header Type 2 -->
+
+
+{% block title %}Любими{% endblock %}
+
+{% block content %}
+
+  <main class="main mt-6 single-product">
+        <div class="page-content mb-10 pb-6">
+          <div class="container">
+            <div class="product product-single row mb-7">
+  <div class="col-md-6 sticky-sidebar-wrapper">
+    <div class="product-gallery pg-vertical sticky-sidebar" data-sticky-options="{'minWidth': 767}" style="height: 300px">
+      <div class="product-single-carousel owl-carousel owl-theme owl-nav-inner  row cols-1 gutter-no">
+
+     <figure class="product-image">
+    <img src="{{ product.primary_image }}" alt="{{ product.title }}" width="800" height="900" />
+</figure>
+
+<!-- Additional Images -->
+{% for image in product.images.all %}
+    <figure class="product-image">
+        <img src="{{ image.url }}" alt="{{ product.title }}" width="800" height="900" />
+    </figure>
+{% endfor %}
+
+      </div>
+      <div class="product-thumbs-wrap">
+        <div class="product-thumbs">
+          {% for image in product.images.all %}
+          <div class="product-thumb {% if forloop.first %}active{% endif %}">
+            <img src="{{ image.thumbnail_url }}" alt="product thumbnail" width="109" height="122" />
+          </div>
+          {% endfor %}
+        </div>
+        <button class="thumb-up disabled">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="thumb-down disabled">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+      {% if product.is_new %}
+      <div class="product-label-group">
+        <label class="product-label label-new">new</label>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="product-details">
+      <div class="product-navigation">
+        <ul class="breadcrumb breadcrumb-lg">
+          <li>
+            <a href=""><i class="d-icon-home"></i></a>
+          </li>
+          <li><a href="{% url 'product_list' %}" class="active">Products</a></li>
+          <li>{{ product.title }}</li>
+        </ul>
+        <ul class="product-nav">
+          {% if previous_product %}
+          <li class="product-nav-prev">
+            <a href="{% url 'product_detail' previous_product.pk %}">
+              <i class="d-icon-arrow-left"></i> Prev
+              <span class="product-nav-popup">
+                <img src="{{ previous_product.thumbnail.url }}" alt="product thumbnail" width="110" height="123" />
+                <span class="product-name">{{ previous_product.title }}</span>
+              </span>
+            </a>
+          </li>
+          {% endif %}
+          {% if next_product %}
+          <li class="product-nav-next">
+            <a href="{% url 'product_detail' next_product.pk %}">
+              Next <i class="d-icon-arrow-right"></i>
+              <span class="product-nav-popup">
+                <img src="{{ next_product.thumbnail.url }}" alt="product thumbnail" width="110" height="123" />
+                <span class="product-name">{{ next_product.title }}</span>
+              </span>
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+      <h1 class="product-name">{{ product.title }}</h1>
+      <div class="product-meta">
+        SKU: <span class="product-sku">{{ product.sku }}</span> BRAND: <span class="product-brand">{{ product.brand }}</span>
+      </div>
+      <div class="product-price">{{ product.price }} лв.</div>
+
+      <p class="product-short-desc">{{ desc }}</p>
+
+
+      <hr class="product-divider" />
+      <div class="product-form product-qty">
+        <div class="product-form-group">
+          <div class="input-group mr-2">
+            <button class="quantity-minus d-icon-minus"></button>
+            <input class="quantity form-control" type="number" min="1" max="{{ product.stock }}" />
+            <button class="quantity-plus d-icon-plus"></button>
+          </div>
+          <button class="btn-product btn-cart text-normal ls-normal font-weight-semi-bold">
+            <i class="d-icon-bag"></i>Добави В Количката
+          </button>
+        </div>
+      </div>
+      <hr class="product-divider mb-3" />
+      <div class="product-footer">
+        <div class="social-links mr-4">
+          <a href="#" class="social-link social-facebook fab fa-facebook-f"></a>
+          <a href="#" class="social-link social-twitter fab fa-twitter"></a>
+          <a href="#" class="social-link social-pinterest fab fa-pinterest-p"></a>
+        </div>
+        <span class="divider d-lg-show"></span>
+        <a href="#" class="btn-product btn-wishlist mr-6"><i class="d-icon-heart"></i>Добави В Любими</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+            <section class="pt-3 mt-10">
+              <h2 class="title justify-content-center">Други Продукти</h2>
+              <div
+                class="owl-carousel owl-theme owl-nav-full row cols-2 cols-md-3 cols-lg-4"
+                data-owl-options="{
+							'items': 5,
+							'nav': false,
+							'loop': false,
+							'dots': true,
+							'margin': 20,
+							'responsive': {
+								'0': {
+									'items': 2
+								},
+								'768': {
+									'items': 3
+								},
+								'992': {
+									'items': 4,
+									'dots': false,
+									'nav': true
+								}
+							}
+						}"
+              >
+                  {% for product in products %}
+
+
+
+                <div class="product" style="height: 300px">
+                  <figure class="product-media">
+                    <a href="product.html">
+                      <img
+                        src="{{ product.primary_image }}"
+                        alt="product"
+                        width="280"
+                        height="315"
+                        style="height: 150px; object-fit: fill"
+                      />
+                    </a>
+                    <div class="product-label-group">
+                      <label class="product-label label-new">new</label>
+                    </div>
+                    <div class="product-action-vertical">
+                      <a
+                        href="#"
+                        class="btn-product-icon btn-cart"
+                        data-toggle="modal"
+                        data-target="#addCartModal"
+                        title="Add to cart"
+                        ><i class="d-icon-bag"></i
+                      ></a>
+                      <a
+                        href="#"
+                        class="btn-product-icon btn-wishlist"
+                        title="Add to wishlist"
+                        ><i class="d-icon-heart"></i
+                      ></a>
+                    </div>
+
+                  </figure>
+                  <div class="product-details">
+                    <div class="product-cat">
+                      <a href="shop-grid-3col.html">{{ product.sub_category }}</a>
+                    </div>
+                    <h3 class="product-name">
+                      <a href="product.html">{{ product.title }}</a>
+                    </h3>
+                    <div class="product-price">
+                      <span class="price">{{ product.price }} лв.</span>
+                    </div>
+
+                  </div>
+                </div>
+                 {% endfor %}
+              </div>
+            </section>
+          </div>
+        </div>
+      </main>
+
+{% endblock %}

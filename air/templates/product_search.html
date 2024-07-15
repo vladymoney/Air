@@ -1,0 +1,271 @@
+{% extends "base.html" %}
+{% load static %}
+
+<!-- End Header Type 2 -->
+
+
+{% block title %}Любими{% endblock %}
+
+{% block content %}
+
+     <main class="main">
+
+
+        <div class="page-content mb-10 pb-6">
+          <div class="container">
+            <div class="row gutter-lg main-content-wrap">
+              <aside
+                class="col-lg-3 sidebar sidebar-fixed sidebar-toggle-remain shop-sidebar sticky-sidebar-wrapper"
+              >
+                <div class="sidebar-overlay"></div>
+                <a class="sidebar-close" href="#"
+                  ><i class="d-icon-times"></i
+                ></a>
+                <a href="#" class="sidebar-toggle">
+                  <i class="fas fa-chevron-right"></i>
+                </a>
+                <div class="sidebar-content">
+                  <div class="sticky-sidebar" data-sticky-options="{'top': 10}">
+
+<div class="widget widget-collapsible">
+    <h3 class="widget-title">Марка</h3>
+    <ul class="widget-body filter-items">
+        {% for manufacturer in manufacturers %}
+            <li>
+                <a href="#" data-manufacturer="{{ manufacturer }}">{{ manufacturer }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+<div class="widget widget-collapsible">
+    <h3 class="widget-title">Климатици</h3>
+    <ul class="widget-body filter-items">
+        {% for sub_category in sub_categories %}
+            <li>
+                <a href="#" data-sub-category="{{ sub_category }}">{{ sub_category }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
+ <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Select all clickable filter items (manufacturers and sub-categories)
+        document.querySelectorAll('.widget-body a').forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+
+                // Determine the type of filter and its value
+                const filterType = this.dataset.manufacturer ? 'manufacturer' : 'sub_category';
+                const filterValue = this.dataset.manufacturer || this.dataset.subCategory;
+
+                // Clear active class from all filters
+                document.querySelectorAll('.widget-body a').forEach(link => {
+                    link.classList.remove('active');
+                });
+
+                // Add active class to the clicked filter
+                this.classList.add('active');
+
+                // Fetch products with the selected filter
+                fetchProducts(filterType, filterValue);
+            });
+        });
+
+        function fetchProducts(filterType, filterValue) {
+            // Construct the query string based on the selected filter
+            const queryString = new URLSearchParams({ [filterType]: filterValue }).toString();
+
+            // Fetch products based on the query string
+            fetch(`?${queryString}`)
+                .then(response => response.text())
+                .then(html => {
+                    // Update the product list and pagination with the fetched HTML content
+                    updateProducts(html);
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function updateProducts(html) {
+            const parser = new DOMParser();
+            const newDocument = parser.parseFromString(html, 'text/html');
+
+            // Replace the product grid
+            const newProductGrid = newDocument.querySelector('.product-wrapper');
+            document.querySelector('.product-wrapper').innerHTML = newProductGrid.innerHTML;
+        }
+    });
+</script>
+
+
+
+{#                    <div class="widget widget-collapsible">#}
+{#                      <h3 class="widget-title">Brands</h3>#}
+{#                      <ul class="widget-body filter-items">#}
+{#                        <li><a href="#">Cinderella</a></li>#}
+{#                        <li><a href="#">Comedy</a></li>#}
+{#                        <li><a href="#">Rightcheck</a></li>#}
+{#                        <li><a href="#">SkillStar</a></li>#}
+{#                        <li><a href="#">SLS</a></li>#}
+{#                      </ul>#}
+{#                    </div>#}
+                  </div>
+                </div>
+              </aside>
+              <div class="col-lg-9 main-content">
+                <nav class="toolbox sticky-toolbox sticky-content fix-top">
+                  <div class="toolbox-left">
+{#                    <div class="toolbox-item toolbox-sort select-box text-dark">#}
+{#                      <label>Sort By :</label>#}
+{#                      <select name="orderby" class="form-control">#}
+{#                        <option value="default">Default</option>#}
+{#                        <option value="popularity" selected="selected">#}
+{#                          Most Popular#}
+{#                        </option>#}
+{#                        <option value="rating">Average rating</option>#}
+{#                        <option value="date">Latest</option>#}
+{#                        <option value="price-low">#}
+{#                          Sort forward price low#}
+{#                        </option>#}
+{#                        <option value="price-high">#}
+{#                          Sort forward price high#}
+{#                        </option>#}
+{#                        <option value>Clear custom sort</option>#}
+{#                      </select>#}
+{#                    </div>#}
+                  </div>
+{#                  <div class="toolbox-right">#}
+{#                    <div class="toolbox-item toolbox-show select-box text-dark">#}
+{#                      <label>Show :</label>#}
+{#                      <select name="count" class="form-control">#}
+{#                        <option value="12">12</option>#}
+{#                        <option value="24">24</option>#}
+{#                        <option value="36">36</option>#}
+{#                      </select>#}
+{#                    </div>#}
+{#                    <div class="toolbox-item toolbox-layout mr-lg-0">#}
+{#                      <a#}
+{#                        href="shop-list-mode.html"#}
+{#                        class="d-icon-mode-list btn-layout"#}
+{#                      ></a>#}
+{#                      <a#}
+{#                        href="shop.html"#}
+{#                        class="d-icon-mode-grid btn-layout active"#}
+{#                      ></a>#}
+{#                    </div>#}
+{#                  </div>#}
+                </nav>
+                <div class="row cols-2 cols-sm-3 product-wrapper">
+                   {% for product in products %}
+            <div class="product-wrap">
+                <div class="product">
+                    <figure class="product-media">
+                        <a href="{% url 'product_detail' product.pk %}">
+                            <img src="{{ product.primary_image }}" alt="{{ product.title }}" width="280" height="315" style="height: 150px; object-fit: fill">
+                        </a>
+
+                        <div class="product-action-vertical">
+                            <a href="{% url 'add_to_cart' product.pk %}" class="btn-product-icon" data-toggle="modal" data-target="#addCartModal" title="Add to cart"><i class="d-icon-bag"></i></a>
+                            <a href="{% url 'add_to_favorites' product.pk %}" class="btn-product-icon" title="Add to wishlist"><i class="d-icon-heart"></i></a>
+                        </div>
+
+                    </figure>
+                    <div class="product-details">
+                        <div class="product-cat">
+                            <a href="shop-classic-filter.html">{{ product.category }}</a>
+                        </div>
+                        <h3 class="product-name">
+                            <a href="{% url 'product_detail' product.pk %}">{{ product.title }}</a>
+                        </h3>
+                        <div class="product-price">
+                            <ins class="new-price">{{ product.price }} лв.</ins>
+                        </div>
+                        <div class="ratings-container">
+                            <div class="ratings-full">
+                                <span class="ratings" style="width: 100%"></span>
+                                <span class="tooltiptext tooltip-top"></span>
+                            </div>
+                            <a href="{% url 'product_detail' product.pk %}" class="rating-reviews">( 6 reviews )</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+
+                </div>
+{#                  <nav class="toolbox toolbox-pagination">#}
+{#        <p class="show-info">#}
+{#Показани са <span>{{ page_obj.start_index }} до {{ page_obj.end_index }}</span> от <span>{{ page_obj.paginator.count }}</span> Продукти        </p>#}
+{#        <ul class="pagination">#}
+{#            {% if page_obj.has_previous %}#}
+{#                <li class="page-item">#}
+{#                    <a class="page-link page-link-prev" href="?page=1" aria-label="First">#}
+{#                        <i class="d-icon-arrow-left"></i>#}
+{#                    </a>#}
+{#                </li>#}
+{#                <li class="page-item">#}
+{#                    <a class="page-link page-link-prev" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">#}
+{#                        <i class="d-icon-arrow-left"></i>#}
+{#                    </a>#}
+{#                </li>#}
+{#            {% else %}#}
+{#                <li class="page-item disabled">#}
+{#                    <a class="page-link page-link-prev" href="#" aria-label="First" tabindex="-1" aria-disabled="true">#}
+{#                        <i class="d-icon-arrow-left"></i>#}
+{#                    </a>#}
+{#                </li>#}
+{#                <li class="page-item disabled">#}
+{#                    <a class="page-link page-link-prev" href="#" aria-label="Previous" tabindex="-1" aria-disabled="true">#}
+{#                        <i class="d-icon-arrow-left"></i>#}
+{#                    </a>#}
+{#                </li>#}
+{#            {% endif %}#}
+{##}
+{#            {% for num in page_obj.paginator.page_range %}#}
+{#                {% if num > page_obj.number|add:-5 and num < page_obj.number|add:5 %}#}
+{#                    {% if page_obj.number == num %}#}
+{#                        <li class="page-item active" aria-current="page">#}
+{#                            <a class="page-link" href="#">{{ num }}</a>#}
+{#                        </li>#}
+{#                    {% else %}#}
+{#                        <li class="page-item">#}
+{#                            <a class="page-link" href="?page={{ num }}">{{ num }}</a>#}
+{#                        </li>#}
+{#                    {% endif %}#}
+{#                {% endif %}#}
+{#            {% endfor %}#}
+{##}
+{#            {% if page_obj.has_next %}#}
+{#                <li class="page-item">#}
+{#                    <a class="page-link page-link-next" href="?page={{ page_obj.next_page_number }}" aria-label="Next">#}
+{#                        <i class="d-icon-arrow-right"></i>#}
+{#                    </a>#}
+{#                </li>#}
+{#                <li class="page-item">#}
+{#                    <a class="page-link page-link-next" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last">#}
+{#                        <i class="d-icon-arrow-right"></i>#}
+{#                    </a>#}
+{#                </li>#}
+{#            {% else %}#}
+{#                <li class="page-item disabled">#}
+{#                    <a class="page-link page-link-next" href="#" aria-label="Next" tabindex="-1" aria-disabled="true">#}
+{#                        <i class="d-icon-arrow-right"></i>#}
+{#                    </a>#}
+{#                </li>#}
+{#                <li class="page-item disabled">#}
+{#                    <a class="page-link page-link-next" href="#" aria-label="Last" tabindex="-1" aria-disabled="true">#}
+{#                        <i class="d-icon-arrow-right"></i>#}
+{#                    </a>#}
+{#                </li>#}
+{#            {% endif %}#}
+{#        </ul>#}
+{#    </nav>#}
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+
+{% endblock %}

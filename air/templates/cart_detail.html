@@ -1,0 +1,124 @@
+
+{% extends "base.html" %}
+{% load static %}
+
+<!-- End Header Type 2 -->
+
+
+{% block title %}Любими{% endblock %}
+
+{% block content %}
+<main class="main cart">
+        <div class="page-content pt-7 pb-10">
+          <div class="step-by pr-4 pl-4">
+            <h3 class="title title-simple title-step active">
+              <a href="cart.html">1. Kоличка</a>
+            </h3>
+            <h3 class="title title-simple title-step">
+              <a href="checkout.html">2. Плащане</a>
+            </h3>
+            <h3 class="title title-simple title-step">
+              <a href="order.html">3. Поръчката е завършена</a>
+            </h3>
+          </div>
+          <div class="container mt-7 mb-2">
+            <div class="row">
+              <div class="col-lg-8 col-md-12 pr-lg-4">
+               <table class="shop-table cart-table">
+    <thead>
+        <tr>
+            <th><span>Продукт</span></th>
+            <th></th>
+            <th><span>Цена</span></th>
+            <th><span>Количество</span></th>
+            <th>Сума</th>
+            <th>Премахване</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if cart_items %}
+            {% for item in cart_items %}
+                <tr>
+                    <td class="product-thumbnail">
+                        <figure>
+                            <a href="{% url 'product_detail' item.product.pk %}">
+                                <img src="{{ item.product.primary_image }}" width="100" height="100" alt="{{ item.product.title }}" />
+                            </a>
+                        </figure>
+                    </td>
+                    <td class="product-name">
+                        <div class="product-name-section">
+                            <a href="{% url 'product_detail' item.product.pk %}">{{ item.product.title }}</a>
+                        </div>
+                    </td>
+                    <td class="product-price">
+                        <span class="amount">{{ item.product.price }} лв.</span>
+                    </td>
+                    <td class="product-quantity">
+                        <div class="input-group">
+
+                            <input class="" type="number" value="{{ item.quantity }}" />
+                        </div>
+                    </td>
+                    <td class="product-subtotal">
+                        <span class="amount">{{ item.subtotal }} лв.</span>
+                    </td>
+                    <td class="product-close">
+                        <a href="{% url 'remove_from_cart' item.product.pk %}" class="product-remove" title="Remove this product">
+                            <i class="fas fa-times"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="6">Your cart is empty.</td>
+            </tr>
+        {% endif %}
+    </tbody>
+</table>
+
+
+              </div>
+              <aside class="col-lg-4 sticky-sidebar-wrapper">
+                <div
+                  class="sticky-sidebar"
+                  data-sticky-options="{'bottom': 20}"
+                >
+                  <div class="summary mb-4">
+                    <h3 class="summary-title text-left">Cart Totals</h3>
+                    <table class="shipping">
+                      <tr class="summary-subtotal">
+                        <td>
+                        </td>
+
+                      </tr>
+                      <tr class="sumnary-shipping shipping-row-last">
+
+                      </tr>
+                    </table>
+
+                    <table class="total">
+                      <tr class="summary-subtotal">
+                        <td>
+                          <h4 class="summary-subtitle">Общо</h4>
+                        </td>
+                        <td>
+                          <p class="summary-total-price ls-s">{{ total }}</p>
+                        </td>
+                      </tr>
+                    </table>
+                    <a
+                      href="{% url 'checkout' %}"
+                      class="btn btn-dark btn-rounded btn-checkout"
+                      >Продължи</a
+                    >
+                  </div>
+                </div>
+              </aside>
+            </div>
+          </div>
+        </div>
+      </main>
+
+{% endblock %}

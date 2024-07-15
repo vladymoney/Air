@@ -1,0 +1,521 @@
+{% extends "base.html" %}
+{% load static %}
+
+<!-- End Header Type 2 -->
+
+
+{% block title %}Любими{% endblock %}
+
+{% block content %}
+
+<main class="main">
+        <div class="page-content">
+          <section class="intro-section">
+            <div
+              class="owl-carousel owl-theme row owl-dot-inner owl-dot-white intro-slider animation-slider cols-1 gutter-no"
+              data-owl-options="{
+                        'nav': false,
+                        'dots': true,
+                        'loop': false,
+                        'items': 1,
+                        'autoplay': false,
+                        'autoplayTimeout': 8000
+                    }"
+            >
+              <div
+                class="banner banner-fixed intro-slide1"
+                style="background-color: white"
+              >
+                <figure>
+                  <img
+                    src="{% static 'images/p1.gif' %}"
+                    alt="intro-banner"
+                    width="1903"
+                    height="630"
+                    style="width: 100%; height: 100%; object-fit: contain; background-color: white;"
+                  />
+                </figure>
+
+              </div>
+             <div class="banner banner-fixed intro-slide2" style="background-color: white;">
+  <figure style="margin: 0;">
+    <img
+      src="{% static 'images/p2.gif' %}"
+      alt="intro-banner"
+      width="1903"
+      height="630"
+      style="width: 100%; height: 100%; object-fit: contain; background-color: white;"
+    />
+  </figure>
+</div>
+
+                <div
+                class="banner banner-fixed intro-slide2"
+                style="background-color: white"
+              >
+                <figure>
+                  <img
+                    src="{% static 'images/p3.gif' %}"
+                    alt="intro-banner"
+                    width="1903"
+                    height="630"
+                    style="width: 100%; height: 100%; object-fit: contain; background-color: white;"
+                  />
+                </figure>
+
+              </div>
+
+
+            </div>
+            <div class="container mt-6 appear-animate">
+  <div class="service-list">
+    <div
+      class="owl-carousel owl-theme row cols-lg-3 cols-sm-2 cols-1"
+      data-owl-options="{
+                        'items': 3,
+                        'nav': false,
+                        'dots': false,
+                        'loop': true,
+                        'autoplay': false,
+                        'autoplayTimeout': 5000,
+                        'responsive': {
+                            '0': {
+                                'items': 1
+                            },
+                            '576': {
+                                'items': 2
+                            },
+                            '768': {
+                                'items': 3,
+                                'loop': false
+                            }
+                        }
+                    }"
+    >
+      <div
+        class="icon-box icon-box-side icon-box1 appear-animate"
+        data-animation-options="{
+                            'name': 'fadeInRightShorter',
+                            'delay': '.3s'
+                        }"
+      >
+        <i class="icon-box-icon d-icon-truck"></i>
+        <div class="icon-box-content">
+          <h4 class="icon-box-title text-capitalize ls-normal lh-1">
+            Безплатна Доставка и Връщане
+          </h4>
+          <p class="ls-s lh-1">Безплатна доставка за поръчки над 100 лева</p>
+        </div>
+      </div>
+      <div
+        class="icon-box icon-box-side icon-box2 appear-animate"
+        data-animation-options="{
+                            'name': 'fadeInRightShorter',
+                            'delay': '.4s'
+                        }"
+      >
+        <i class="icon-box-icon d-icon-service"></i>
+        <div class="icon-box-content">
+          <h4 class="icon-box-title text-capitalize ls-normal lh-1">
+            Поддръжка на Клиенти 24/7
+          </h4>
+          <p class="ls-s lh-1">Незабавен достъп до перфектна поддръжка</p>
+        </div>
+      </div>
+      <div
+        class="icon-box icon-box-side icon-box3 appear-animate"
+        data-animation-options="{
+                            'name': 'fadeInRightShorter',
+                            'delay': '.5s'
+                        }"
+      >
+        <i class="icon-box-icon d-icon-secure"></i>
+        <div class="icon-box-content">
+          <h4 class="icon-box-title text-capitalize ls-normal lh-1">
+            100% Защитено Плащане
+          </h4>
+          <p class="ls-s lh-1">Уверяваме сигурно плащане!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+          </section>
+
+          <section
+            class="product-wrapper container appear-animate mt-6 mt-md-10 pt-4 pb-8"
+            data-animation-options="{
+                    'delay': '.3s'
+                }"
+          >
+            <h2 class="title title-center mb-5">Най-Продавани</h2>
+            <div
+              class="owl-carousel owl-theme row owl-nav-full cols-2 cols-md-3 cols-lg-4"
+              data-owl-options="{
+                        'items': 5,
+                        'nav': false,
+                        'loop': false,
+                        'dots': true,
+                        'margin': 20,
+                        'responsive': {
+                            '0': {
+                                'items': 2
+                            },
+                            '768': {
+                                'items': 3
+                            },
+                            '992': {
+                                'items': 4,
+                                'dots': false,
+                                'nav': true
+                            }
+                        }
+                    }"
+            >
+{% for product in products|slice:":4" %}
+<div class="product text-center">
+  <figure class="product-media">
+    <a href="{% url 'product_detail' product.pk %}">
+      <img
+        src="{{ product.primary_image }}"
+        alt="{{ product.title }}"
+        width="280"
+        style="background-color: #f2f3f5; height: 150px; object-fit: fill"
+      />
+    </a>
+    {% if product.discount %}
+    <div class="product-label-group">
+      <span class="product-label label-sale">{{ product.discount }}% off</span>
+    </div>
+    {% endif %}
+    <div class="product-action-vertical">
+      <a
+        href="#"
+        class="btn-product-icon btn-cart"
+        data-toggle="modal"
+        data-target="#addCartModal"
+        title="Add to cart"
+        ><i class="d-icon-bag"></i
+      ></a>
+      <a
+        href="#"
+        class="btn-product-icon btn-wishlist"
+        title="Add to wishlist"
+        ><i class="d-icon-heart"></i
+      ></a>
+    </div>
+
+  </figure>
+  <div class="product-details">
+    <div class="product-cat">
+      <a href="shop-grid-3cols.html">{{ product.category }}</a>
+    </div>
+    <h3 class="product-name">
+      <a href="{% url 'product_detail' product.pk %}">{{ product.title }}</a>
+    </h3>
+    <div class="product-price">
+      <ins class="new-price">{{ product.price }} лв.</ins>
+      {% if product.old_price %}
+      <del class="old-price">${{ product.old_price }} лв.</del>
+      {% endif %}
+    </div>
+    <div class="ratings-container">
+      <div class="ratings-full">
+        <span class="ratings" style="width: {{ product.rating_percentage }}%"></span>
+        <span class="tooltiptext tooltip-top"></span>
+      </div>
+      <a href="{% url 'product_detail' product.pk %}" class="rating-reviews">( {{ product.reviews_count }} reviews )</a>
+    </div>
+  </div>
+</div>
+{% endfor %}
+            </div>
+          </section>
+
+
+         <section
+            class="mt-2 pb-6 pt-10 pb-md-10 appear-animate"
+            data-animation-options="{
+                    'delay': '.3s'
+                }"
+          >
+            <h2 class="title d-none">Марки</h2>
+            <div class="container">
+              <div
+                class="owl-carousel owl-theme row brand-carousel cols-xl-6 cols-lg-5 cols-md-4 cols-sm-3 cols-2"
+                data-owl-options="{
+                            'nav': false,
+                            'dots': false,
+                            'autoplay': true,
+                            'margin': 20,
+                            'loop': true,
+                            'responsive': {
+                                '0': {
+                                    'items': 2
+                                },
+                                '576': {
+                                    'items': 3
+                                },
+                                '768': {
+                                    'items': 4
+                                },
+                                '992': {
+                                    'items': 5
+                                },
+                                '1200': {
+                                    'items': 6
+                                }
+                            }
+                        }"
+              >
+                <figure>
+                  <img
+                    src="{% static 'images/11.png' %}"
+                    alt="brand"
+                    width="180"
+                    height="100"
+                  />
+                </figure>
+                <figure>
+                  <img
+                    src="{% static 'images/22.png' %}"
+                    alt="brand"
+                    width="180"
+                    height="100"
+                  />
+                </figure>
+                <figure>
+                  <img
+                    src="{% static 'images/33.png' %}"
+                    alt="brand"
+                    width="180"
+                    height="100"
+                  />
+                </figure>
+                <figure>
+                  <img
+                    src="{% static 'images/4.png' %}"
+                    alt="brand"
+                    width="180"
+                    height="100"
+                  />
+                </figure>
+                <figure>
+                  <img
+                    src="{% static 'images/5.jpg' %}"
+                    alt="brand"
+                    width="180"
+                    height="100"
+                  />
+                </figure>
+                <figure>
+                  <img
+                    src="{% static 'images/6.png' %}"
+                    alt="brand"
+                    width="180"
+                    height="100"
+                  />
+                </figure>
+                  <figure>
+                  <img
+                    src="{% static 'images/7.png' %}"
+                    alt="brand"
+                    width="180"
+                    height="100"
+                  />
+                </figure>
+                  <figure>
+                  <img
+                    src="{% static 'images/8.png' %}"
+                    alt="brand"
+                    width="180"
+                    height="100"
+                  />
+                </figure>
+              </div>
+            </div>
+          </section>
+          <section
+            class="product-wrapper mt-6 mt-md-10 pt-4 mb-10 pb-2 container appear-animate"
+            data-animation-options="{
+                    'delay': '.6s'
+                }"
+          >
+            <h2 class="title title-center">Най-Нови</h2>
+             <div class="owl-carousel owl-theme row owl-nav-full cols-2 cols-md-3 cols-lg-4"
+       data-owl-options="{
+         'items': 5,
+         'nav': false,
+         'loop': false,
+         'dots': true,
+         'margin': 20,
+         'responsive': {
+           '0': {
+             'items': 2
+           },
+           '768': {
+             'items': 3
+           },
+           '992': {
+             'items': 4,
+             'dots': false,
+             'nav': true
+           }
+         }
+       }">
+{% for product in products|slice:"4:" %}
+    <div class="product text-center">
+      <figure class="product-media">
+        <a href="{% url 'product_detail' product.pk %}">
+          <img src="{{ product.primary_image }}" alt="{{ product.title }}" width="220" height="245" style="height: 150px; object-fit: fill">
+        </a>
+        <div class="product-action-vertical">
+          <a href="#" class="btn-product-icon btn-cart" data-toggle="modal" data-target="#addCartModal" title="Add to cart"><i class="d-icon-bag"></i></a>
+          <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"><i class="d-icon-heart"></i></a>
+        </div>
+
+      </figure>
+      <div class="product-details">
+        <div class="product-cat">
+          <a href="shop-grid-3cols.html">{{ product.category }}</a>
+        </div>
+        <h3 class="product-name">
+          <a href="{% url 'product_detail' product.pk %}">{{ product.title }}</a>
+        </h3>
+        <div class="product-price">
+          <span class="price">{{ product.price }} лв.</span>
+        </div>
+        <div class="ratings-container">
+          <div class="ratings-full">
+            <span class="ratings" style="width: {{ product.rating_percentage }}%;"></span>
+            <span class="tooltiptext tooltip-top"></span>
+          </div>
+          <a href="{% url 'product_detail' product.pk %}" class="rating-reviews">( {{ product.reviews_count }} reviews )</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+          </section>
+
+          <section class="blog-post-wrapper mt-6 mt-md-10 pt-7 appear-animate" data-animation-options="{'name': 'fadeIn', 'duration': '1s'}">
+  <div class="container">
+    <h2 class="title title-center">Блог</h2>
+    <div
+      class="owl-carousel owl-theme post-slider row cols-lg-3 cols-sm-2 cols-1"
+      data-owl-options="{
+        'nav': false,
+        'dots': true,
+        'margin': 20,
+        'responsive': {
+          '0': {
+            'items': 1
+          },
+          '576': {
+            'items': 2
+          },
+          '992': {
+            'items': 3,
+            'dots': false
+          }
+        }
+      }">
+      <div class="blog-post mb-4">
+        <article class="post post-frame overlay-zoom">
+          <figure class="post-media">
+            <a href="post-single.html">
+              <img
+                src="{% static 'images/111.png' %}"
+                alt="Климатици"
+                width="340"
+                height="206"
+               style="height: 250px"/>
+            </a>
+            <div class="post-calendar">
+              <span class="post-day">19</span>
+              <span class="post-month">ЯНУ</span>
+            </div>
+          </figure>
+          <div class="post-details">
+            <h4 class="post-title">
+              <a href="post-single.html">Как да изберете правилния климатик за вашия дом</a>
+            </h4>
+            <p class="post-content">
+              Открийте факторите, които трябва да вземете предвид при избора на климатик, подходящ за вашия дом.
+            </p>
+            <a href="post-single.html" class="btn btn-primary btn-link btn-underline">Научи повече<i class="d-icon-arrow-right"></i></a>
+          </div>
+        </article>
+      </div>
+      <div class="blog-post mb-4">
+        <article class="post post-frame overlay-zoom">
+          <figure class="post-media">
+            <a href="post-single.html">
+              <img
+                src="{% static 'images/222.jpg' %}"
+                alt="Климатици"
+                width="340"
+                height="206"
+              style="height: 250px"/>
+            </a>
+            <div class="post-calendar">
+              <span class="post-day">19</span>
+              <span class="post-month">ЯНУ</span>
+            </div>
+          </figure>
+          <div class="post-details">
+            <h4 class="post-title">
+              <a href="post-single.html">Предимствата на инверторната технология в климатиците</a>
+            </h4>
+            <p class="post-content">
+              Научете как инверторната технология може да направи вашия климатик по-ефективен и икономичен.
+            </p>
+            <a href="post-single.html" class="btn btn-primary btn-link btn-underline">Научи повече<i class="d-icon-arrow-right"></i></a>
+          </div>
+        </article>
+      </div>
+      <div class="blog-post mb-4">
+        <article class="post post-frame overlay-zoom">
+          <figure class="post-media">
+            <a href="post-single.html">
+              <img
+                src="{% static 'images/333.jpg' %}"
+                alt="Климатици"
+                width="340"
+                height="206"
+              style="height: 250px"/>
+            </a>
+            <div class="post-calendar">
+              <span class="post-day">19</span>
+              <span class="post-month">ЯНУ</span>
+            </div>
+          </figure>
+          <div class="post-details">
+            <h4 class="post-title">
+              <a href="post-single.html">Съвети за поддръжка на климатика за плавно функциониране</a>
+            </h4>
+            <p class="post-content">
+              Следвайте тези прости съвети за поддръжка, за да гарантирате, че вашият климатик...
+            </p>
+            <a href="post-single.html" class="btn btn-primary btn-link btn-underline">Научи повече<i class="d-icon-arrow-right"></i></a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+          <section
+            class="mt-2 pb-6 pt-10 pb-md-10 appear-animate"
+            data-animation-options="{
+                    'delay': '.3s'
+                }"
+          >
+
+          </section>
+
+        </div>
+      </main>
+
+{% endblock %}
